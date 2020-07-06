@@ -1,10 +1,7 @@
 import com.itheima.*;
 
 import java.io.File;
-import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
     public static final int READ_THREAD_COUNT = 5;
@@ -14,9 +11,7 @@ public class Main {
         String FilePath = System.getProperty("user.dir")+"\\data";
         File[] files = new File(FilePath).listFiles();
 
-        SortResources.restFileCount = new AtomicInteger(files.length);
-        SortResources sortResources = new RiseMinQuotaSortResource();
-
+        SortResources sortResources = new RiseMinQuotaSortResource(files.length);
 
         ExecutorService executor = Executors.newFixedThreadPool(READ_THREAD_COUNT + SORT_THREAD_COUNT);
         //讲解：为什么用CountDownLatch
@@ -40,7 +35,7 @@ public class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        System.out.println("-------------结果展示----------------");
         for(DataVo vo:sortResources.getSortResult()){
             System.out.println(vo);
         }

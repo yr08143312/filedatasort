@@ -6,6 +6,11 @@ import java.util.List;
 
 public class RiseMinQuotaSortResource extends SortResources {
     private List<DataVo> sortList = new ArrayList<DataVo>();
+
+    public RiseMinQuotaSortResource(int fileSize) {
+        super(fileSize);
+    }
+
     @Override
     protected void sort(final DataVo vo) {
         //如果vo在list中存在的情况

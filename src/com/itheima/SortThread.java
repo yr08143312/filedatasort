@@ -11,9 +11,7 @@ public class SortThread implements Runnable {
     }
     @Override
     public void run() {
-        while(!sortResources.isEmpty()) {
-            sortResources.consumeData();
-        }
+        sortResources.consumeData();
         countDownLatch.countDown();
     }
 }
