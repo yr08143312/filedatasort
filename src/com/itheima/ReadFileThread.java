@@ -42,6 +42,7 @@ public class ReadFileThread implements Runnable{
             }
             SortResources.restFileCount.decrementAndGet();
         }
+        //System.out.println("生产线程---"+Thread.currentThread().getName()+"结束----"+SortResources.restFileCount.get());
 
     }
 

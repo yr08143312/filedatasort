@@ -14,8 +14,15 @@ public abstract class SortResources {
     }
 
     public synchronized void produceData(DataVo vo){
+        while(originalList.size() > 3){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         originalList.push(vo);
-        System.out.println(Thread.currentThread().getName()+"线程生产了--"+vo);
+        //System.out.println(Thread.currentThread().getName()+"线程生产了--"+vo);
         notifyAll();
     }
 
@@ -28,13 +35,14 @@ public abstract class SortResources {
                     return;
                 }
                 try {
+                    //System.out.println(Thread.currentThread().getName()+"---------"+originalList.size()+"  "+restFileCount.get() +"----"+getSortResult());
                     wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
             DataVo vo = originalList.poll();
-            System.out.println(Thread.currentThread().getName()+"线程消费了--"+vo);
+            //System.out.println(Thread.currentThread().getName()+"线程消费了--"+vo);
             //由子类实现排序。
             sort(vo);
             notifyAll();//结束一次循环唤醒其他线程
@@ -44,7 +52,6 @@ public abstract class SortResources {
     protected abstract void sort(DataVo vo);
 
     public abstract Collection<DataVo> getSortResult();
-
 
 
 }
