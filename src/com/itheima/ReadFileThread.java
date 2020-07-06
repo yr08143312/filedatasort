@@ -30,6 +30,7 @@ public class ReadFileThread implements Runnable{
                     DataVo vo = new DataVo(strArr[0],strArr[1],Float.parseFloat(strArr[2]));
                     sortResources.produceData(vo);
                 }
+                sortResources.fileSizeDecrement();
             } catch (Exception e) {
                 e.printStackTrace();
             }finally {
@@ -40,7 +41,6 @@ public class ReadFileThread implements Runnable{
                     e.printStackTrace();
                 }
             }
-            SortResources.restFileCount.decrementAndGet();
         }
         //System.out.println("生产线程---"+Thread.currentThread().getName()+"结束----"+SortResources.restFileCount.get());
 

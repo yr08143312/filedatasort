@@ -8,6 +8,6 @@ public class SortThread implements Runnable {
     @Override
     public void run() {
         sortResources.consumeData();
-        System.out.println("消费线程---"+Thread.currentThread().getName()+"结束");
+        //System.out.println("消费线程---"+Thread.currentThread().getName()+"结束");
     }
 }

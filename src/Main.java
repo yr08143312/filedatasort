@@ -5,12 +5,12 @@ import java.util.concurrent.*;
 
 public class Main {
     public static final int READ_THREAD_COUNT = 10;
-    public static final int SORT_THREAD_COUNT = 5;
 
     public static void main(String[] args) {
         String FilePath = System.getProperty("user.dir")+"\\data";
         File[] files = new File(FilePath).listFiles();
-        SortResources sortResources = new RiseMinQuotaSortResource(files.length);
+        SortInterface sort = new RiseGroupMinquotaSort();
+        SortResources sortResources = new SortResources(files.length,sort);
 
         ExecutorService executor = Executors.newFixedThreadPool(READ_THREAD_COUNT);
 
@@ -30,19 +30,20 @@ public class Main {
             executor.execute(readFileThread);
         }
 
-        for(int i = 0;i < SORT_THREAD_COUNT;i++){
-            executor.execute(new SortThread(sortResources));
-        }
-
-        /*try {
-            countDownLatch.await();
+        Thread sortThread = new Thread(new SortThread(sortResources));
+        sortThread.start();
+        try {
+            sortThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("-------------结果展示----------------");
-        for(DataVo vo:sortResources.getSortResult()){
+
+        //结果打印
+        System.out.println("---------------结果打印---------------");
+        for(DataVo vo:sort.getResult()){
             System.out.println(vo);
-        }*/
+        }
+
         executor.shutdown();
     }
 }

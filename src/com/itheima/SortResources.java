@@ -1,16 +1,17 @@
 package com.itheima;
 
-import java.util.Collection;
 import java.util.LinkedList;
-import java.util.concurrent.atomic.AtomicInteger;
 
-public abstract class SortResources {
+public class SortResources {
     protected LinkedList<DataVo> originalList = new LinkedList();
     //剩余文件数，由于要在类的外面调用，所以这里是静态的，并且是原子类。
-    public static AtomicInteger restFileCount;
+    public int restFileCount;
 
-    public SortResources(int fileSize){
-        restFileCount = new AtomicInteger(fileSize);
+    private SortInterface sort;
+
+    public SortResources(int fileSize,SortInterface sort){
+        restFileCount = fileSize;
+        this.sort = sort;
     }
 
     public synchronized void produceData(DataVo vo){
@@ -29,13 +30,11 @@ public abstract class SortResources {
     public synchronized void consumeData() {
         while(true){
             while (originalList.size() == 0) {
-                if(restFileCount.get() == 0){
+                if(restFileCount == 0){
                     //System.out.println(Thread.currentThread().getName()+"消费线程离开");
-                    notifyAll();//离开之前唤醒其他线程
                     return;
                 }
                 try {
-                    //System.out.println(Thread.currentThread().getName()+"---------"+originalList.size()+"  "+restFileCount.get() +"----"+getSortResult());
                     wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -44,14 +43,16 @@ public abstract class SortResources {
             DataVo vo = originalList.poll();
             //System.out.println(Thread.currentThread().getName()+"线程消费了--"+vo);
             //由子类实现排序。
-            sort(vo);
-            notifyAll();//结束一次循环唤醒其他线程
+            sort.sort(vo);
+            notifyAll();
         }
     }
 
-    protected abstract void sort(DataVo vo);
 
-    public abstract Collection<DataVo> getSortResult();
+    public synchronized void fileSizeDecrement() {
+        --restFileCount;
+        //这里为什么要notifyAll()??相当于生产线程通知消费线程结束了
+        notifyAll();
 
-
+    }
 }
