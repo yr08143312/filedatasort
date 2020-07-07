@@ -27,9 +27,10 @@ public class ReadFileThread implements Runnable{
                         continue;
                     }
                     String[] strArr = tempStr.split(",");
-                    DataVo vo = new DataVo(strArr[0],strArr[1],Float.parseFloat(strArr[2]));
+                    DataVo vo = new DataVo(strArr[0].trim(),strArr[1].trim(),Float.parseFloat(strArr[2].trim()));
                     sortResources.produceData(vo);
                 }
+                //！！！！！讲解：此处需要将剩余文件数减少。
                 sortResources.fileSizeDecrement();
             } catch (Exception e) {
                 e.printStackTrace();

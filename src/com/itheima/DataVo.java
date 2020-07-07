@@ -1,8 +1,10 @@
 package com.itheima;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class DataVo {
+
+    private String id;
+    private String groupId;
+    private float quota;
 
     public DataVo() {
     }
@@ -12,10 +14,6 @@ public class DataVo {
         this.groupId = groupId;
         this.quota = quota;
     }
-
-    private String id;
-    private String groupId;
-    private float quota;
 
     public String getId() {
         return id;

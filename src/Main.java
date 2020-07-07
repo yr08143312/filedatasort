@@ -7,8 +7,7 @@ public class Main {
     public static final int READ_THREAD_COUNT = 10;
 
     public static void main(String[] args) {
-        String FilePath = System.getProperty("user.dir")+"\\data";
-        File[] files = new File(FilePath).listFiles();
+        File[] files = new File(System.getProperty("user.dir")+"/data").listFiles();
         SortInterface sort = new RiseGroupMinquotaSort();
         SortResources sortResources = new SortResources(files.length,sort);
 
