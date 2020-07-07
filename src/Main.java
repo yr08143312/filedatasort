@@ -7,6 +7,7 @@ public class Main {
     public static final int READ_THREAD_COUNT = 10;
 
     public static void main(String[] args) {
+        //找出所有的文件
         File[] files = new File(System.getProperty("user.dir")+"/data").listFiles();
         SortInterface sort = new RiseGroupMinquotaSort();
         SortResources sortResources = new SortResources(files.length,sort);
@@ -16,7 +17,7 @@ public class Main {
         for(int i = 0;i < READ_THREAD_COUNT;i++){
             ReadFileThread readFileThread = new ReadFileThread(sortResources);
             for(int j = 0;j < files.length ;j++){
-                //文件号码和线程数量取模
+                //文件标号和线程数量取模
                 int mod = (j+1) % READ_THREAD_COUNT;
                 //如果取模刚好等于线程编号
                 //或者
@@ -29,10 +30,10 @@ public class Main {
             executor.execute(readFileThread);
         }
 
-        Thread sortThread = new Thread(new SortThread(sortResources));
-        sortThread.start();
+        Thread sortThread1 = new Thread(new SortThread(sortResources));
+        sortThread1.start();
         try {
-            sortThread.join();
+            sortThread1.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -44,6 +44,7 @@ public class DataVo {
         return groupId + "，" + id + "，" + quota;
     } 
 
+    //！！！！！讲解：为什么需要equals方法和hashCode方法，因为我们的数据最终需要排序，排序的话就需要放在容器中，而容器中要匹配某个元素必须要有这两个方法。如果没有这两个方法，就必须自己实现匹配。
     @Override
     public boolean equals(Object o) {
         if (this == o) {
